@@ -1,15 +1,16 @@
 class Solution:
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
-        hash = {}
-        for n in nums:
-            if n not in hash:
-                hash[n] = 1
-            else:
-                hash[n] += 1
+        count = {}
+        freq = [[] for i in range(len(nums) + 1)]
 
-        print(hash)
-        temp = sorted(hash.items(), key=lambda x: -x[1])
+        for n in nums:
+            count[n] = 1 + count.get(n, 0)
+        for n, c in count.items():
+            freq[c].append(n)
+
         res = []
-        for i in range(k):
-            res.append(temp[i][0])
-        return res
+        for i in range(len(freq) - 1, 0, -1):
+            for n in freq[i]:
+                res.append(n)
+                if len(res) == k:
+                    return res
